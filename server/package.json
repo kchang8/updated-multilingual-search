@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "C:/Users/Rachel/CS4610/multilingual-search-master/server/node_modules/nodemon/bin/nodemon.js src/app.js --exec 'npm run lint && node'",
-    "lint": "C:/Users/Rachel/CS4610/multilingual-search-master/server/node_modules/.bin/eslint src/**/*.js",
+    "start": "./server/node_modules/nodemon/bin/nodemon.js src/app.js --exec 'npm run lint && node'",
+    "lint": "./server/node_modules/.bin/eslint src/**/*.js",
 	"build": "node src/app.js"
   },
   "keywords": [],

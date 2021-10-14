@@ -36,5 +36,11 @@ export default {
   },
   testresult (value) {
     return Api().post('testresult', value)
+  },
+  userAOIPositions (value) {
+    return Api().post('userAOIPositions', value)
+  },
+  userGaze (value) {
+    return Api().post('userGaze', value)
   }
 }

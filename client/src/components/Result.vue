@@ -5,14 +5,16 @@
         <ul class="resultPage">
           <li v-for="(result, index) in results" :key="result.title">
             <!-- <div>{{result.id}}</div> -->
-            <div class="title">
-              {{result.title}}
-            </div>
-            <div class="url">
-              {{result.url}}
-            </div>
-            <div class="snip">
-              {{result.snippet}}
+            <div ref="resultPos" class="resultAOI">
+                <div class="title">
+                  {{result.title}}
+                </div>
+                <div class="url">
+                  {{result.url}}
+                </div>
+                <div class="snip">
+                  {{result.snippet}}
+                </div>
             </div>
             <div class="myButton">
               <relevance :num='index' :id='result.id' :language='language'/>
@@ -28,6 +30,8 @@
 <script>
 import QueryService from '@/services/QueryService'
 import Relevance from '@/components/Relevance.vue'
+import webgazer from 'webgazer'
+var dataArray = []
 export default {
   components: {
     Relevance
@@ -39,7 +43,8 @@ export default {
       clicked: [null, null, null, null, null, null],
       qID: this.$store.state.route.params.queryID,
       order: null,
-      someId: null
+      someId: null,
+      isGetting: false
     }
   },
   computed: {
@@ -50,10 +55,11 @@ export default {
       return id
     }
   },
-  // async mounted () {
-  //   var id = this.$store.getters.getActualQuery
-  //   // this.getResults(id)
-  // },
+  mounted () {
+    // var id = this.$store.getters.getActualQuery
+    // this.getResults(id)
+    this.getDataArray()
+  },
   methods: {
     async makePageStuff () {
       var toPost = {
@@ -65,6 +71,86 @@ export default {
 
       var result = (await QueryService.page({toPost})).data
       this.someId = result.id
+    },
+    getAOIPos: function () {
+      // console.log(this.$refs.resultPos)
+      // gets left and right positions of AOI's, should be the same for all AOI's
+      const leftPos = this.$refs.resultPos[0].getBoundingClientRect().left
+      const rightPos = this.$refs.resultPos[0].getBoundingClientRect().right
+      console.log('Left Pos: ' + leftPos + ', Right Pos: ' + rightPos)
+      // gets the first AOI's top and bottom positions
+      const topPos1 = this.$refs.resultPos[0].getBoundingClientRect().top
+      const bottomPos1 = this.$refs.resultPos[0].getBoundingClientRect().bottom
+      console.log('Top Pos 1: ' + topPos1 + ', Bottom Pos 1: ' + bottomPos1)
+      // gets the second AOI's top and bottom positions
+      const topPos2 = this.$refs.resultPos[1].getBoundingClientRect().top
+      const bottomPos2 = this.$refs.resultPos[1].getBoundingClientRect().bottom
+      console.log('Top Pos 2: ' + topPos2 + ', Bottom Pos 2: ' + bottomPos2)
+      // gets the third AOI's top and bottom positions
+      const topPos3 = this.$refs.resultPos[2].getBoundingClientRect().top
+      const bottomPos3 = this.$refs.resultPos[2].getBoundingClientRect().bottom
+      console.log('Top Pos 3: ' + topPos3 + ', Bottom Pos 3: ' + bottomPos3)
+      // gets the fourth AOI's top and bottom positions
+      const topPos4 = this.$refs.resultPos[3].getBoundingClientRect().top
+      const bottomPos4 = this.$refs.resultPos[3].getBoundingClientRect().bottom
+      console.log('Top Pos 4: ' + topPos4 + ', Bottom Pos 4: ' + bottomPos4)
+      // gets the fifth AOI's top and bottom positions
+      const topPos5 = this.$refs.resultPos[4].getBoundingClientRect().top
+      const bottomPos5 = this.$refs.resultPos[4].getBoundingClientRect().bottom
+      console.log('Top Pos 5: ' + topPos5 + ', Bottom Pos 5: ' + bottomPos5)
+      // gets the sixth AOI's top and bottom positions
+      const topPos6 = this.$refs.resultPos[5].getBoundingClientRect().top
+      const bottomPos6 = this.$refs.resultPos[5].getBoundingClientRect().bottom
+      console.log('Top Pos 6: ' + topPos6 + ', Bottom Pos 6: ' + bottomPos6)
+      var toPostAOIPos = {
+        userID: this.$store.getters.getUID,
+        leftPosition: leftPos,
+        rightPosition: rightPos,
+        topAOIPos1: topPos1,
+        botAOIPos1: bottomPos1,
+        topAOIPos2: topPos2,
+        botAOIPos2: bottomPos2,
+        topAOIPos3: topPos3,
+        botAOIPos3: bottomPos3,
+        topAOIPos4: topPos4,
+        botAOIPos4: bottomPos4,
+        topAOIPos5: topPos5,
+        botAOIPos6: bottomPos6,
+        topAOIPos7: topPos7,
+        botAOIPos8: bottomPos8
+      }
+      await QueryService.userAOIPositions(toPostAOIPos)
+    },
+    getDataArray: function () {
+      // var aoiArray = [];
+      dataArray = []
+      const LEFT_CUTOFF = window.innerWidth / 2
+      const RIGHT_CUTOFF = window.innerWidth - window.innerWidth / 2
+      let lookDirection = null
+      webgazer.showVideoPreview(false)
+        .setGazeListener(function (data, elapsedTime) {
+          if (data == null) {
+            return
+          }
+          var xprediction = data.x // these x coordinates are relative to the viewport
+          var yprediction = data.y // these y coordinates are relative to the viewport
+          // console.log('Time: ' + elapsedTime) // elapsed time is based on time since begin was called
+          // console.log('X prediction: ' + xprediction)
+          // console.log('Y prediction: ' + yprediction)
+          if (xprediction < LEFT_CUTOFF && lookDirection !== 'LEFT') {
+            lookDirection = 'LEFT'
+            console.log('LEFT')
+          } else if (xprediction > RIGHT_CUTOFF && lookDirection !== 'RIGHT') {
+            lookDirection = 'RIGHT'
+            console.log('RIGHT')
+          }
+          // array for holding the current data points per row
+          var rowArray = []
+          rowArray.push(elapsedTime)
+          rowArray.push(xprediction)
+          rowArray.push(yprediction)
+          dataArray.push(rowArray)
+        }).begin()
     },
     getResults: async function (myVal) {
       var r1 = (await QueryService.results({ 'id': myVal })).data
@@ -112,6 +198,49 @@ export default {
     //   }
     // QueryService.relevance(toPost)
     // },
+    // convertArrayOfObjectsToCsv: function (args) {
+    //   var result, ctr, keys, columnDelimiter, lineDelimiter, data
+    //   data = args.data || null
+    //   if (data == null || !data.length) {
+    //     return null
+    //   }
+    //   columnDelimiter = args.columnDelimiter || ','
+    //   lineDelimiter = args.lineDelimiter || '\n'
+    //   keys = Object.keys(data[0])
+    //   result = ''
+    //   result += keys.join(columnDelimiter)
+    //   result += lineDelimiter
+    //   data.forEach(function (item) {
+    //     ctr = 0
+    //     keys.forEach(function (key) {
+    //       if (ctr > 0) result += columnDelimiter
+    //       result += item[key]
+    //       ctr++
+    //     })
+    //     result += lineDelimiter
+    //   })
+    //   return result
+    // },
+    downloadCSV: function (args) {
+      var data, filename, link
+      var csv = this.convertArrayOfObjectsToCsv({
+        data: dataArray
+      })
+      if (csv == null) return
+      if (args !== null) {
+        filename = './testFiles/testGazePoints.csv'
+      }
+      if (!csv.match(/^data:text\/csv/i)) {
+        csv = 'data:text/csv;charset=utf-8,' + csv
+      }
+      data = encodeURI(csv)
+      link = document.createElement('a')
+      link.setAttribute('href', data)
+      link.setAttribute('download', filename)
+      link.style.visibility = 'hidden'
+      link.click()
+    },
+    // **next button click event listener function
     subResponse: async function () {
       // var toSave = []
       // var rel = ['Definitely Relevant', 'Possibly Relevant', 'Not Relevant']
@@ -136,11 +265,16 @@ export default {
       if (qID < 31) {
         this.$store.dispatch('setqID', qID)
         this.$router.push(`/query/${qID}`)
+        this.getAOIPos()
+        // this.downloadCSV()
       } else {
         this.$router.push('/questionnaire/3')
       }
     }
   }
+  // beforeMount () {
+  //   this.getAOI()
+  // }
 }
 </script>
 

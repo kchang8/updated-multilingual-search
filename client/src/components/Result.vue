@@ -252,6 +252,7 @@ export default {
         qID: this.$store.state.route.params.queryID,
         gazePoints: dataArrayToString
       }
+      console.log(toPostUserGaze)
       await QueryService.userGaze(toPostUserGaze)
 
       var qID = parseInt(this.$store.state.route.params.queryID) + 1

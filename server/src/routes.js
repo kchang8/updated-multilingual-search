@@ -8,6 +8,8 @@ const GetQuestions = require('./controllers/GetQuestions.js')
 const PostQuestionnaire = require('./controllers/PostQuestionnaire.js')
 const Testing = require('./controllers/test.js')
 const Page = require('./controllers/Page.js')
+const UserAOIPositions = require('./controllers/UserAOIPositions.js')
+const UserGaze = require('./controllers/UserGaze.js')
 
 module.exports = (app) => {
   app.get('/queries',
@@ -37,5 +39,9 @@ module.exports = (app) => {
   app.post('/pageUpdate',
     Page.updatePage),
   app.post('/testresult',
-    PostTestResult.postTestResult)
+    PostTestResult.postTestResult),
+  app.post('/userAOIPositions',
+    UserAOIPositions.userAOIPositions),
+  app.post('/userGaze',
+    UserGaze.userGaze)
 }

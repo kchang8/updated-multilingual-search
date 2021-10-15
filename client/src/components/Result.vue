@@ -72,37 +72,6 @@ export default {
       var result = (await QueryService.page({toPost})).data
       this.someId = result.id
     },
-    // getAOIPos: function () {
-    //   // console.log(this.$refs.resultPos)
-    //   // gets left and right positions of AOI's, should be the same for all AOI's
-    //   const leftPos = this.$refs.resultPos[0].getBoundingClientRect().left
-    //   const rightPos = this.$refs.resultPos[0].getBoundingClientRect().right
-    //   console.log('Left Pos: ' + leftPos + ', Right Pos: ' + rightPos)
-    //   // gets the first AOI's top and bottom positions
-    //   const topPos1 = this.$refs.resultPos[0].getBoundingClientRect().top
-    //   const bottomPos1 = this.$refs.resultPos[0].getBoundingClientRect().bottom
-    //   console.log('Top Pos 1: ' + topPos1 + ', Bottom Pos 1: ' + bottomPos1)
-    //   // gets the second AOI's top and bottom positions
-    //   const topPos2 = this.$refs.resultPos[1].getBoundingClientRect().top
-    //   const bottomPos2 = this.$refs.resultPos[1].getBoundingClientRect().bottom
-    //   console.log('Top Pos 2: ' + topPos2 + ', Bottom Pos 2: ' + bottomPos2)
-    //   // gets the third AOI's top and bottom positions
-    //   const topPos3 = this.$refs.resultPos[2].getBoundingClientRect().top
-    //   const bottomPos3 = this.$refs.resultPos[2].getBoundingClientRect().bottom
-    //   console.log('Top Pos 3: ' + topPos3 + ', Bottom Pos 3: ' + bottomPos3)
-    //   // gets the fourth AOI's top and bottom positions
-    //   const topPos4 = this.$refs.resultPos[3].getBoundingClientRect().top
-    //   const bottomPos4 = this.$refs.resultPos[3].getBoundingClientRect().bottom
-    //   console.log('Top Pos 4: ' + topPos4 + ', Bottom Pos 4: ' + bottomPos4)
-    //   // gets the fifth AOI's top and bottom positions
-    //   const topPos5 = this.$refs.resultPos[4].getBoundingClientRect().top
-    //   const bottomPos5 = this.$refs.resultPos[4].getBoundingClientRect().bottom
-    //   console.log('Top Pos 5: ' + topPos5 + ', Bottom Pos 5: ' + bottomPos5)
-    //   // gets the sixth AOI's top and bottom positions
-    //   const topPos6 = this.$refs.resultPos[5].getBoundingClientRect().top
-    //   const bottomPos6 = this.$refs.resultPos[5].getBoundingClientRect().bottom
-    //   console.log('Top Pos 6: ' + topPos6 + ', Bottom Pos 6: ' + bottomPos6)
-    // },
     getDataArray: function () {
       // var aoiArray = [];
       dataArray = []
@@ -116,16 +85,6 @@ export default {
           }
           var xprediction = data.x // these x coordinates are relative to the viewport
           var yprediction = data.y // these y coordinates are relative to the viewport
-          // console.log('Time: ' + elapsedTime) // elapsed time is based on time since begin was called
-          // console.log('X prediction: ' + xprediction)
-          // console.log('Y prediction: ' + yprediction)
-          // if (xprediction < LEFT_CUTOFF && lookDirection !== 'LEFT') {
-          //   lookDirection = 'LEFT'
-          //   console.log('LEFT')
-          // } else if (xprediction > RIGHT_CUTOFF && lookDirection !== 'RIGHT') {
-          //   lookDirection = 'RIGHT'
-          //   console.log('RIGHT')
-          // }
           // array for holding the current data points per row
           var rowArray = []
           rowArray.push(elapsedTime)
@@ -229,6 +188,7 @@ export default {
       // stores aoi positions into useraoipositions db table
       var toPostAOIPos = {
         userID: this.$store.getters.getUID,
+        qID: this.$store.state.route.params.queryID,
         leftPosition: leftPos,
         rightPosition: rightPos,
         topAOIPos1: topPos1,

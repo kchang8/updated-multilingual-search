@@ -16,6 +16,16 @@ module.exports = function (sequelize, DataTypes) {
         },
         field: 'userID'
       },
+      qID: {
+        type: DataTypes.INTEGER(11),
+        allowNull: false,
+        primaryKey: true,
+        references: {
+          model: 'SearchQuery',
+          key: 'ID'
+        },
+        field: 'qID'
+      }, 
       leftPosition: {
         type: DataTypes.DOUBLE,
         allowNull: false,

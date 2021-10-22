@@ -87,7 +87,7 @@
     "vuex": "^3.0.1",
     "vuex-persistedstate": "^2.5.4",
     "vuex-router-sync": "^5.0.0",
-    "webgazer": "^2.1.0",
+    "webgazer": "kchang8/WebGazer",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
     "webpack-dev-server": "^2.9.1",

@@ -18,5 +18,7 @@ module.exports = {
     source: 'src',
     img: 'src',
     image: 'xlink:href'
-  }
+  },
+  publicPath: './webclient-hapii',
+  assetsDir: 'webclient-hapii'
 }

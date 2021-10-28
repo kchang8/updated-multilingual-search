@@ -78,7 +78,7 @@ export default {
       // const LEFT_CUTOFF = window.innerWidth / 2
       // const RIGHT_CUTOFF = window.innerWidth - window.innerWidth / 2
       // let lookDirection = null
-      webgazer.showVideoPreview(false)
+      webgazer.showVideoPreview(false).showPredictionPoints(false)
         .setGazeListener(function (data, elapsedTime) {
           if (data == null) {
             return

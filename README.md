@@ -10,3 +10,5 @@ Install the dependencies for both the client and server by the command:
 npm install
 
 from inside the client and server folder.
+
+commit triggerbuild

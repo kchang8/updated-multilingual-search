@@ -98,9 +98,14 @@ export default {
       // var q2 = myVal + 1
       var sTemp = null
       if (this.$store.getters.getLanguage === 'Spanish') {
-        sTemp = myVal + 36
+        // changed offset to 60 since there are 60 sets of queries for each langauge
+        sTemp = myVal + 60
       } else {
-        sTemp = myVal + 36
+        if (myVal >= 135 && myVal <= 161) {
+          sTemp = myVal - 60
+        } else {
+          sTemp = myVal + 60
+        }
       }
       var r2 = (await QueryService.results({ 'id': sTemp })).data
       var uid = this.$store.getters.getUID

@@ -9,7 +9,7 @@ module.exports = {
       })
     } catch (err) {
       res.status(400).send({
-        error: 'Unable to create page',
+        error: `Unable to create page ${err.toString()}`,
         request: req.body
       })
     }
@@ -27,7 +27,7 @@ module.exports = {
       })
     } catch (err) {
       res.status(400).send({
-        error: 'Unable to update page'
+        error: `Unable to update page ${err.toString()}`
       })
     }
   }

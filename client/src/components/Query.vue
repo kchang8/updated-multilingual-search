@@ -62,18 +62,25 @@ export default {
         query = (await QueryService.show(toQuery)).data
         this.language = 'Spanish'
       } else {
-        query = (await QueryService.show(toQuery + 36)).data
+        query = (await QueryService.show(toQuery + 60)).data
         this.language = 'English'
       }
     } else {
-      toQuery += 72
+      toQuery += 120
       this.$store.dispatch('setActualQuery', toQuery)
       if ((queryID % 2) === 1) {
         query = (await QueryService.show(toQuery)).data
         this.language = 'Chinese'
       } else {
-        query = (await QueryService.show(toQuery + 36)).data
-        this.language = 'English'
+        if (toQuery >= 135 && toQuery <= 161) {
+          console.log('Toquery if: ' + toQuery)
+          query = (await QueryService.show(toQuery - 60)).data
+          this.language = 'English'
+        } else {
+          console.log('Toquery else: ' + toQuery)
+          query = (await QueryService.show(toQuery + 60)).data
+          this.language = 'English'
+        }
       }
     }
     this.query = query['query']
@@ -95,18 +102,25 @@ export default {
           query = (await QueryService.show(toQuery)).data
           this.language = 'Spanish'
         } else {
-          query = (await QueryService.show(toQuery + 36)).data
+          query = (await QueryService.show(toQuery + 60)).data
           this.language = 'English'
         }
       } else {
-        toQuery += 72
+        toQuery += 121
         this.$store.dispatch('setActualQuery', toQuery)
         if ((queryID % 2) === 1) {
           query = (await QueryService.show(toQuery)).data
           this.language = 'Chinese'
         } else {
-          query = (await QueryService.show(toQuery + 36)).data
-          this.language = 'English'
+          if (toQuery >= 135 && toQuery <= 161) {
+            console.log('Toquery if: ' + toQuery)
+            query = (await QueryService.show(toQuery - 60)).data
+            this.language = 'English'
+          } else {
+            console.log('Toquery else: ' + toQuery)
+            query = (await QueryService.show(toQuery + 60)).data
+            this.language = 'English'
+          }
         }
       }
       this.query = query['query']
